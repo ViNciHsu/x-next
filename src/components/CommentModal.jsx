@@ -1,7 +1,7 @@
 'use client';
 
 import { useRecoilState } from "recoil";
-import { modalState } from "@/atom/modalAtom";
+import { modalState } from "@/components/ModalAtom";
 
 export default function CommentModal() {
     const [open, setOpen] = useRecoilState(modalState);
