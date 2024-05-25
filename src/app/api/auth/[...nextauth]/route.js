@@ -12,10 +12,10 @@ const handeler = NextAuth({
 
   callbacks: {
     async session({ session, token }) {
-        session.user.username = session.user.name.split(' ').join(' ').toLocaleLowerCase();
-        session.user.uid = token.sub;
-        console.log(session);
-        return session;
+      session.user.username = session.user.name.split(' ').join(' ').toLocaleLowerCase();
+      session.user.uid = token.sub;
+      // console.log(session);
+      return session;
     },
   },
 });
