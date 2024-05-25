@@ -40,7 +40,7 @@ export default function Icons({ id, uid }) {
         });
       }
     } else {
-      signIn;
+      signIn();
     }
   };
 
