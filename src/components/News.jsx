@@ -5,33 +5,16 @@ import axios from "axios";
 
 export default function News({ searchQuery }) {
   const [news, setNews] = useState([]);
-  const [resultNum, setresultNum] = useState(3);
+  const [resultNum, setresultNum] = useState(6);
   const [filteredNews, setFilteredNews] = useState([]);
 
   useEffect(() => {
-    const query = "台灣";
-    const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
-
-    if (!apiKey) {
-      console.error("API key is missing");
-      return;
-    }
-
-    // 計算日期
-    const today = new Date();
-    const to = today.toISOString().split("T")[0];
-    const from = new Date(today.setDate(today.getDate() - 1))
-      .toISOString()
-      .split("T")[0];
-
     axios
-      .get(
-        `https://newsapi.org/v2/everything?q=${query}&from=${from}&to=${to}&sortBy=publishedAt&apiKey=${apiKey}`
-      )
+      .get("/api/news")
       .then((response) => {
-        console.log(response.data.articles);
-        setNews(response.data.articles);
-        setFilteredNews(response.data.articles);
+        console.log("呼叫API: ", response.data.articles);
+        setNews(response.data.articles); // 設置獲取到的新聞資料
+        setFilteredNews(response.data.articles); // 設置過濾後的新聞資料
       })
       .catch((error) => {
         console.error("錯誤資訊:", error);
