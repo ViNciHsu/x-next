@@ -11,6 +11,12 @@ export default function News({ searchQuery }) {
   useEffect(() => {
     const query = "台灣";
     const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+
+    if (!apiKey) {
+      console.error("API key is missing");
+      return;
+    }
+
     // 計算日期
     const today = new Date();
     const to = today.toISOString().split("T")[0];
