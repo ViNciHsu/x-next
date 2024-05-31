@@ -9,15 +9,23 @@ export default function News({ searchQuery }) {
   const [filteredNews, setFilteredNews] = useState([]);
 
   useEffect(() => {
+    const query = "台灣";
+    const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+    // 計算日期
+    const today = new Date();
+    const to = today.toISOString().split("T")[0];
+    const from = new Date(today.setDate(today.getDate() - 1))
+      .toISOString()
+      .split("T")[0];
+
     axios
       .get(
-        // "https://saurav.tech/NewsAPI/top-headlines/category/business/us.json"
-        "https://newsdata.io/api/1/latest?apikey=pub_44995dd50daff2cc4007b7627523e2913d3f7&q=台灣"
+        `https://newsapi.org/v2/everything?q=${query}&from=${from}&to=${to}&sortBy=publishedAt&apiKey=${apiKey}`
       )
       .then((response) => {
-        console.log(response.data.results);
-        setNews(response.data.results);
-        setFilteredNews(response.data.results);
+        console.log(response.data.articles);
+        setNews(response.data.articles);
+        setFilteredNews(response.data.articles);
       })
       .catch((error) => {
         console.error("錯誤資訊:", error);
@@ -38,28 +46,18 @@ export default function News({ searchQuery }) {
 
   return (
     <div className="text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2">
-      <h4 className="font-bold text-xl px-4">Whats happening</h4>
-      {filteredNews.slice(0, resultNum).map((result) => (
-        <div key={result.link}>
-          <a href={result.link} target="_blank">
+      <h4 className="font-bold text-xl px-4">Breaking News</h4>
+      {filteredNews.slice(0, resultNum).map((result, idx) => (
+        <div key={result.url}>
+          <a href={result.url} target="_blank">
             <div className="flex items-center justify-between px-4 py-2 space-x-1 hover:bg-gray-200 transition duration-200">
               <div className="space-y-0.5">
                 <h6 className="text-sm font-bold">{result.title}</h6>
                 <p className="text-xs font-meduium text-gray-500">
-                  {result.keywords &&
-                    result.keywords.map((keyword, index) => (
-                      <span key={index}>
-                        {index > 0 && " "}#{keyword}
-                      </span>
-                    ))}
+                  <span key={idx}>{result.author}</span>
                 </p>
               </div>
-              <img
-                src={result.image_url}
-                width={100}
-                className="rounded-xl"
-                alt={result.article_id}
-              />
+              <img src={result.urlToImage} width={100} className="rounded-xl" />
             </div>
           </a>
         </div>
